@@ -2,19 +2,9 @@
 #include "Core/Core.h"
 #include "Graphics/Graphics.h"
 
-void EmptyWindow::run()
+void EmptyWindow::appLoop()
 {
-  Graphics graphics;
-  graphics.create();
-  graphics.setClearColor(0.5f, 0.5f, 0.5f);
-
-  while (!mWindow.isClosed())
-  {
-    graphics.clear(GL_COLOR_BUFFER_BIT);
-
-    mWindow.present();
-    mWindow.pollEvents();
-  }
+  mGraphics.clear(GL_COLOR_BUFFER_BIT);
 }
 
 int main(int argc, char* argv[])

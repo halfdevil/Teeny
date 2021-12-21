@@ -51,6 +51,12 @@ void VertexArray::draw(GLenum mode, uint32_t first, uint32_t count)
   glDrawArrays(mode, first, count);
 }
 
+void VertexArray::drawIndirect(GLenum mode, uint32_t drawCount, uint32_t maxDrawCount, uint32_t stride)
+{
+  glMultiDrawElementsIndirectCount(mode, GL_UNSIGNED_INT, (const void*)sizeof(GLsizei),
+    (GLsizei)drawCount, (GLsizei)maxDrawCount, (GLsizei)stride);
+}
+
 void VertexArray::activate()
 {
   glBindVertexArray(mHandle);

@@ -1,6 +1,7 @@
 #include "Cube.h"
 #include "Core/Core.h"
 #include "Graphics/Graphics.h"
+#include "Scene/Scene.h"
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
@@ -77,11 +78,21 @@ struct PerFrameData
 	int isWireframe;
 };
 
-void Cube::run()
+Cube::Cube()
+  : mPerFrameDataBuffer(GL_UNIFORM_BUFFER)
+{  
+}
+
+void Cube::init()
 {
-  Graphics graphics;
-  graphics.create();
-  graphics.setClearColor(0.5f, 0.5f, 0.5f);
+  mInput.addAction({
+    .name = "exit",
+    .keys{ GLFW_KEY_ESCAPE }
+  });
+
+  mInput.bindAction("exit", InputEvent::Pressed, [this](int32_t key) {
+    exit();
+  });
 
   Shader vertexShader(GL_VERTEX_SHADER);
   vertexShader.create(vertexShaderSource, "traingle.vert");
@@ -89,63 +100,56 @@ void Cube::run()
   Shader fragmentShader(GL_FRAGMENT_SHADER);
   fragmentShader.create(fragmentShaderSource, "triangle.frag");
 
-  Program program;
-  program.create({&vertexShader, &fragmentShader});
+  mProgram.create({&vertexShader, &fragmentShader});
+  mVertexArray.create();
 
-  VertexArray vertexArray;
-  vertexArray.create();
-
-  constexpr uint32_t bufferSize = sizeof(PerFrameData);
-
-  Buffer perFrameDataBuffer(GL_UNIFORM_BUFFER);
-  perFrameDataBuffer.create(bufferSize, nullptr, GL_DYNAMIC_STORAGE_BIT);
-  perFrameDataBuffer.bindRange(0, 0, sizeof(PerFrameData));
+  mPerFrameDataBuffer.create(sizeof(PerFrameData), nullptr, GL_DYNAMIC_STORAGE_BIT);
+  mPerFrameDataBuffer.bindRange(0, 0, sizeof(PerFrameData));
   
-  DepthStencilState depthStencilState;
-  depthStencilState.depthTestEnable = true;
-  graphics.setDepthStencilState(depthStencilState);
+  mGraphics.setDepthStencilState({
+    .depthTestEnable = true
+  });
 
-  RasterizationState rasterizerState;
-  rasterizerState.polygonOffsetLineEnable = true;
-  rasterizerState.polygonOffsetFactor = -1.0f;
-  rasterizerState.polygonOffsetUnits = -1.0f;
-  
-  while (!mWindow.isClosed())
+  mRasterizationState =
   {
-    graphics.setViewport(0, 0, mWindow.getWidth(), mWindow.getHeight());
-    graphics.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    .polygonOffsetLineEnable = true,
+    .polygonOffsetFactor = -1.0f,
+    .polygonOffsetUnits = -1.0f
+  };
+  
+  mGraphics.setRasterizationState(mRasterizationState);
+}
 
-    program.activate();
-    vertexArray.activate();
+void Cube::appLoop()
+{
+  mGraphics.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    const mat4 m = glm::rotate(glm::translate(mat4(1.0f), vec3(0.0f, 0.0f, -3.5f)), 
-      (float)glfwGetTime(), vec3(1.0f, 1.0f, 1.0f));
+  mProgram.activate();
+  mVertexArray.activate();
 
-    const float ratio = mWindow.getWidth() / (float)mWindow.getHeight();
-    const mat4 p = glm::perspective(45.0f, ratio, 0.1f, 1000.0f);
+  const mat4 m = glm::rotate(glm::translate(mat4(1.0f), vec3(0.0f, 0.0f, -3.5f)), 
+    (float)glfwGetTime(), vec3(1.0f, 1.0f, 1.0f));
 
-    PerFrameData perFrameData =
-    {
-      .mvp = p * m,
-      .isWireframe = false
-    };   
+  const float ratio = mWindow.getWidth() / (float)mWindow.getHeight();
+  const mat4 p = glm::perspective(45.0f, ratio, 0.1f, 1000.0f);
 
-    perFrameDataBuffer.upload(0, bufferSize, &perFrameData);
+  PerFrameData perFrameData =
+  {
+    .mvp = p * m,
+    .isWireframe = false
+  };   
 
-    rasterizerState.polygonMode = GL_FILL;
-    graphics.setRasterizationState(rasterizerState);
-    vertexArray.draw(GL_TRIANGLES, 0, 36);
+  mPerFrameDataBuffer.upload(0, sizeof(PerFrameData), &perFrameData);
+  mRasterizationState.polygonMode = GL_FILL;
+  mGraphics.setRasterizationState(mRasterizationState);
+  mVertexArray.draw(GL_TRIANGLES, 0, 36);
 
-    perFrameData.isWireframe = true;
-    perFrameDataBuffer.upload(0, bufferSize, &perFrameData);
+  perFrameData.isWireframe = true;
+  mPerFrameDataBuffer.upload(0, sizeof(PerFrameData), &perFrameData);
 
-    rasterizerState.polygonMode = GL_LINE;
-    graphics.setRasterizationState(rasterizerState);
-    vertexArray.draw(GL_TRIANGLES, 0, 36);
-
-    mWindow.present();
-    mWindow.pollEvents();
-  }
+  mRasterizationState.polygonMode = GL_LINE;
+  mGraphics.setRasterizationState(mRasterizationState);
+  mVertexArray.draw(GL_TRIANGLES, 0, 36);
 }
 
 int main(int argc, char* argv[])

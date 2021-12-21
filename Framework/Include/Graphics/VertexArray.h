@@ -31,6 +31,7 @@ public:
 
   void setIndexBuffer(GLenum indexFormat, uint32_t numIndices, const void* data);
   void draw(GLenum mode, uint32_t first, uint32_t count);
+  void drawIndirect(GLenum mode, uint32_t drawCount, uint32_t maxDrawCount, uint32_t stride);
   void activate();
 
 private:

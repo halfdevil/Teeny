@@ -4,8 +4,8 @@
 
 class EmptyWindow : public Application
 { 
-public:
+protected:
 
-  void run();
+  virtual void appLoop() override;
 };
 

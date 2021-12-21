@@ -6,6 +6,18 @@ class Cube : public Application
 { 
 public:
 
-  void run();
+  Cube();
+
+protected:
+
+  virtual void init() override;
+  virtual void appLoop() override;
+
+private:
+
+  Program mProgram;
+  VertexArray mVertexArray;
+  Buffer mPerFrameDataBuffer;
+  RasterizationState mRasterizationState;
 };
 

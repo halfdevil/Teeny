@@ -4,8 +4,14 @@
 
 class Triangle : public Application
 { 
-public:
+protected:
 
-  void run();
+  virtual void init() override;
+  virtual void appLoop() override;
+
+private:
+
+  Program mProgram;
+  VertexArray mVertexArray;
 };
 

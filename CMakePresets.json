@@ -3,9 +3,9 @@
   "configurePresets": [
     {
       "name": "Windows-x64-Debug",
-      "displayName": "Visual Studio Professional 2019 Release - amd64",
-      "description": "Using compilers for Visual Studio 16 2019 (x64 architecture)",
-      "generator": "Visual Studio 16 2019",
+      "displayName": "Visual Studio Professional 2022 Release - amd64",
+      "description": "Using compilers for Visual Studio 17 2022 (x64 architecture)",
+      "generator": "Visual Studio 17 2022",
       "toolset": "host=x64",
       "architecture": "x64",
       "binaryDir": "${sourceDir}/Build/${presetName}",

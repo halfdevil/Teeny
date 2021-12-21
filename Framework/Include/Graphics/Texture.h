@@ -37,6 +37,11 @@ public:
     return mHandle;
   }
 
+  GLuint64 getHandleBindless() const
+  {
+    return mHandleBindless;
+  }
+
   const TextureProperties& getProperties() const
   {
     return mProperties;
@@ -51,5 +56,6 @@ private:
 
   GLenum mType{ 0 };
   GLuint mHandle{ 0 };
+  GLuint64 mHandleBindless{ 0 };
   TextureProperties mProperties;
 };

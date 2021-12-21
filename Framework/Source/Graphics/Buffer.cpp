@@ -20,6 +20,16 @@ void Buffer::destroy()
   }
 }
 
+void Buffer::bind()
+{
+  glBindBuffer(mTarget, mHandle);
+}
+
+void Buffer::bindAs(GLenum target) 
+{
+  glBindBuffer(target, mHandle);
+}
+
 void Buffer::bind(uint32_t index)
 {
   glBindBufferBase(mTarget, index, mHandle);

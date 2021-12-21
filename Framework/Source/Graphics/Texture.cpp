@@ -69,6 +69,9 @@ void Texture::create(const std::string& fileName)
       .minFilter = GL_LINEAR_MIPMAP_LINEAR,
       .magFilter = GL_LINEAR
     });
+
+    mHandleBindless = glGetTextureHandleARB(mHandle);
+    glMakeTextureHandleResidentARB(mHandleBindless);
   }
 }
 

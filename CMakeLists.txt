@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(OpenGLSamples CXX C)
+project(Teeny CXX C)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_property(GLOBAL PROPERTY CXX_STANDARD 20)
@@ -35,7 +35,6 @@ set_property(TARGET assimp PROPERTY FOLDER "ThirdParty")
 set_property(TARGET meshoptimizer PROPERTY FOLDER "ThirdParty")
 
 include_directories(ThirdParty/glfw/include)
-include_directories(ThirdParty/glm/include)
 include_directories(ThirdParty/glad/include)
 include_directories(ThirdParty/assimp/include)
 include_directories(ThirdParty/stb)
