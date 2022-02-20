@@ -9,42 +9,42 @@ class Window
 {
 public:
 
-  Window() = default;
-  ~Window()
-  {
-    destroy();  
-  }
+	Window() = default;
+	~Window()
+	{
+		destroy();
+	}
 
-  GLFWwindow* getHandle() const 
-  {
-    return mHandle;
-  }
+	GLFWwindow* getHandle() const
+	{
+		return mHandle;
+	}
 
-  uint32_t getWidth() const 
-  {
-    return mWidth;
-  }
+	uint32_t getWidth() const
+	{
+		return mWidth;
+	}
 
-  uint32_t getHeight() const
-  {
-    return mHeight;
-  }
+	uint32_t getHeight() const
+	{
+		return mHeight;
+	}
 
-  void create(const std::string& title, uint32_t width = 0, uint32_t height = 0);
-  void destroy();
+	void create(const std::string& title, uint32_t width = 0, uint32_t height = 0);
+	void destroy();
 
-  bool isClosed() const;
-  void close();
-  void pollEvents();
-  void present();
+	bool isClosed() const;
+	void close();
+	void pollEvents();
+	void present();
 
 public:
 
-  Observer<int32_t, bool> onKeyCallback;
+	Observer<int32_t, bool> onKeyCallback;
 
 private:
 
-  GLFWwindow* mHandle{ nullptr };
-  uint32_t mWidth{ 0 };
-  uint32_t mHeight{ 0 };
+	GLFWwindow* mHandle{ nullptr };
+	uint32_t mWidth{ 0 };
+	uint32_t mHeight{ 0 };
 };

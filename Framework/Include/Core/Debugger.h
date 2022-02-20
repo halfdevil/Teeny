@@ -6,6 +6,6 @@ class Debugger : public Singleton<Debugger>
 {
 public:
 
-  void assert(bool condition, const char* fileName, uint32_t lineNo, const char* format, ...);
-  void fatal(bool condition, const char* fileName, uint32_t lineNo, const char* format, ...);
+	void assert(bool condition, const char* fileName, uint32_t lineNo, const char* format, ...);
+	void fatal(bool condition, const char* fileName, uint32_t lineNo, const char* format, ...);
 };

@@ -3,61 +3,61 @@
 
 void Program::create(std::vector<const Shader*> shaders)
 {
-  mHandle = glCreateProgram();
-  if (!mHandle)
-  {
-    EXIT("glCreateProgram() failed");
-  }
+	mHandle = glCreateProgram();
+	if (!mHandle)
+	{
+		EXIT("glCreateProgram() failed");
+	}
 
-  for (const auto& shader : shaders)
-  {
-    glAttachShader(mHandle, shader->getHandle());
-  }
+	for (const auto& shader : shaders)
+	{
+		glAttachShader(mHandle, shader->getHandle());
+	}
 
-  glLinkProgram(mHandle);
+	glLinkProgram(mHandle);
 
-  GLint status{ GL_TRUE };
-  glGetProgramiv(mHandle, GL_LINK_STATUS, &status);
+	GLint status{ GL_TRUE };
+	glGetProgramiv(mHandle, GL_LINK_STATUS, &status);
 
-  if (!status)
-  {
-    char buffer[8192];
-    GLsizei length{ 0 };
-    glGetProgramInfoLog(mHandle, sizeof(buffer), &length, buffer);
+	if (!status)
+	{
+		char buffer[8192];
+		GLsizei length{ 0 };
+		glGetProgramInfoLog(mHandle, sizeof(buffer), &length, buffer);
 
-    if (length)
-    {
-      ASSERT(false, "Program linking failed: %s", buffer);
-    }
-  }
+		if (length)
+		{
+			ASSERT(false, "Program linking failed: %s", buffer);
+		}
+	}
 
 #ifdef DEBUG_BUILD
-  glValidateProgram(mHandle);
-  glGetProgramiv(mHandle, GL_VALIDATE_STATUS, &status);
+	glValidateProgram(mHandle);
+	glGetProgramiv(mHandle, GL_VALIDATE_STATUS, &status);
 
-  if (!status)
-  {
-    char buffer[8192];
-    GLsizei length{ 0 };
-    glGetProgramInfoLog(mHandle, sizeof(buffer), &length, buffer);
+	if (!status)
+	{
+		char buffer[8192];
+		GLsizei length{ 0 };
+		glGetProgramInfoLog(mHandle, sizeof(buffer), &length, buffer);
 
-    if (length)
-    {
-      LOGWARNING("Program validation failed: %s", buffer);
-    }
-  }
+		if (length)
+		{
+			LOGWARNING("Program validation failed: %s", buffer);
+		}
+	}
 #endif
 }
 
 void Program::destroy()
 {
-  if (mHandle)
-  {
-    glDeleteProgram(mHandle);
-  }
+	if (mHandle)
+	{
+		glDeleteProgram(mHandle);
+	}
 }
 
 void Program::activate()
 {
-  glUseProgram(mHandle);
+	glUseProgram(mHandle);
 }

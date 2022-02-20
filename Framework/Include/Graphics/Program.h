@@ -6,22 +6,22 @@ class Program
 {
 public:
 
-  Program() = default;
-  ~Program()
-  {
-    destroy();
-  }
+	Program() = default;
+	~Program()
+	{
+		destroy();
+	}
 
-  GLuint getHandle() const
-  {
-    return mHandle;
-  }
+	GLuint getHandle() const
+	{
+		return mHandle;
+	}
 
-  void create(std::vector<const Shader*> shaders);
-  void destroy();
-  void activate();
+	void create(std::vector<const Shader*> shaders);
+	void destroy();
+	void activate();
 
 private:
 
-  GLuint mHandle{ 0 };
+	GLuint mHandle{ 0 };
 };

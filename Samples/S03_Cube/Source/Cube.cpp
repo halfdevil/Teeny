@@ -79,84 +79,84 @@ struct PerFrameData
 };
 
 Cube::Cube()
-  : mPerFrameDataBuffer(GL_UNIFORM_BUFFER)
-{  
+	: mPerFrameDataBuffer(GL_UNIFORM_BUFFER)
+{
 }
 
 void Cube::init()
 {
-  mInput.addAction({
-    .name = "exit",
-    .keys{ GLFW_KEY_ESCAPE }
-  });
+	mInput.addAction({
+	  .name = "exit",
+	  .keys{ GLFW_KEY_ESCAPE }
+		});
 
-  mInput.bindAction("exit", InputEvent::Pressed, [this](int32_t key) {
-    exit();
-  });
+	mInput.bindAction("exit", InputEvent::Pressed, [this](int32_t key) {
+		exit();
+		});
 
-  Shader vertexShader(GL_VERTEX_SHADER);
-  vertexShader.create(vertexShaderSource, "traingle.vert");
+	Shader vertexShader(GL_VERTEX_SHADER);
+	vertexShader.create(vertexShaderSource, "traingle.vert");
 
-  Shader fragmentShader(GL_FRAGMENT_SHADER);
-  fragmentShader.create(fragmentShaderSource, "triangle.frag");
+	Shader fragmentShader(GL_FRAGMENT_SHADER);
+	fragmentShader.create(fragmentShaderSource, "triangle.frag");
 
-  mProgram.create({&vertexShader, &fragmentShader});
-  mVertexArray.create();
+	mProgram.create({ &vertexShader, &fragmentShader });
+	mVertexArray.create();
 
-  mPerFrameDataBuffer.create(sizeof(PerFrameData), nullptr, GL_DYNAMIC_STORAGE_BIT);
-  mPerFrameDataBuffer.bindRange(0, 0, sizeof(PerFrameData));
-  
-  mGraphics.setDepthStencilState({
-    .depthTestEnable = true
-  });
+	mPerFrameDataBuffer.create(sizeof(PerFrameData), nullptr, GL_DYNAMIC_STORAGE_BIT);
+	mPerFrameDataBuffer.bindRange(0, 0, sizeof(PerFrameData));
 
-  mRasterizationState =
-  {
-    .polygonOffsetLineEnable = true,
-    .polygonOffsetFactor = -1.0f,
-    .polygonOffsetUnits = -1.0f
-  };
-  
-  mGraphics.setRasterizationState(mRasterizationState);
+	mGraphics.setDepthStencilState({
+	  .depthTestEnable = true
+		});
+
+	mRasterizationState =
+	{
+	  .polygonOffsetLineEnable = true,
+	  .polygonOffsetFactor = -1.0f,
+	  .polygonOffsetUnits = -1.0f
+	};
+
+	mGraphics.setRasterizationState(mRasterizationState);
 }
 
 void Cube::appLoop()
 {
-  mGraphics.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	mGraphics.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  mProgram.activate();
-  mVertexArray.activate();
+	mProgram.activate();
+	mVertexArray.activate();
 
-  const mat4 m = glm::rotate(glm::translate(mat4(1.0f), vec3(0.0f, 0.0f, -3.5f)), 
-    (float)glfwGetTime(), vec3(1.0f, 1.0f, 1.0f));
+	const mat4 m = glm::rotate(glm::translate(mat4(1.0f), vec3(0.0f, 0.0f, -3.5f)),
+		(float)glfwGetTime(), vec3(1.0f, 1.0f, 1.0f));
 
-  const float ratio = mWindow.getWidth() / (float)mWindow.getHeight();
-  const mat4 p = glm::perspective(45.0f, ratio, 0.1f, 1000.0f);
+	const float ratio = mWindow.getWidth() / (float)mWindow.getHeight();
+	const mat4 p = glm::perspective(45.0f, ratio, 0.1f, 1000.0f);
 
-  PerFrameData perFrameData =
-  {
-    .mvp = p * m,
-    .isWireframe = false
-  };   
+	PerFrameData perFrameData =
+	{
+	  .mvp = p * m,
+	  .isWireframe = false
+	};
 
-  mPerFrameDataBuffer.upload(0, sizeof(PerFrameData), &perFrameData);
-  mRasterizationState.polygonMode = GL_FILL;
-  mGraphics.setRasterizationState(mRasterizationState);
-  mVertexArray.draw(GL_TRIANGLES, 0, 36);
+	mPerFrameDataBuffer.upload(0, sizeof(PerFrameData), &perFrameData);
+	mRasterizationState.polygonMode = GL_FILL;
+	mGraphics.setRasterizationState(mRasterizationState);
+	mVertexArray.draw(GL_TRIANGLES, 0, 36);
 
-  perFrameData.isWireframe = true;
-  mPerFrameDataBuffer.upload(0, sizeof(PerFrameData), &perFrameData);
+	perFrameData.isWireframe = true;
+	mPerFrameDataBuffer.upload(0, sizeof(PerFrameData), &perFrameData);
 
-  mRasterizationState.polygonMode = GL_LINE;
-  mGraphics.setRasterizationState(mRasterizationState);
-  mVertexArray.draw(GL_TRIANGLES, 0, 36);
+	mRasterizationState.polygonMode = GL_LINE;
+	mGraphics.setRasterizationState(mRasterizationState);
+	mVertexArray.draw(GL_TRIANGLES, 0, 36);
 }
 
 int main(int argc, char* argv[])
 {
-  Cube app;
-  app.create("Teeny - Cube", 1024, 768);
-  app.run();
+	Cube app;
+	app.create("Teeny - Cube", 1024, 768);
+	app.run();
 
-  return 0;
+	return 0;
 }

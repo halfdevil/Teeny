@@ -7,22 +7,22 @@ class Singleton
 {
 public:
 
-  Singleton()
-  {
-    mInstance = static_cast<T*>(this);
-  }
+	Singleton()
+	{
+		mInstance = static_cast<T*>(this);
+	}
 
-  static T* getPtr()
-  {
-    return mInstance;
-  }
+	static T* getPtr()
+	{
+		return mInstance;
+	}
 
-  static T& get()
-  {
-    return *mInstance;
-  }
+	static T& get()
+	{
+		return *mInstance;
+	}
 
 private:
 
-  inline static T* mInstance{ nullptr };
+	inline static T* mInstance{ nullptr };
 };

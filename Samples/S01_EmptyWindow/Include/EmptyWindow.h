@@ -3,9 +3,9 @@
 #include "Core/Application.h"
 
 class EmptyWindow : public Application
-{ 
+{
 protected:
 
-  virtual void appLoop() override;
+	virtual void appLoop() override;
 };
 

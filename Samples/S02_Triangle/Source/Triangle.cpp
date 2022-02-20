@@ -39,29 +39,29 @@ static const char* fragmentShaderSource = R"(
 
 void Triangle::init()
 {
-  Shader vertexShader(GL_VERTEX_SHADER);
-  vertexShader.create(vertexShaderSource, "traingle.vert");
+	Shader vertexShader(GL_VERTEX_SHADER);
+	vertexShader.create(vertexShaderSource, "traingle.vert");
 
-  Shader fragmentShader(GL_FRAGMENT_SHADER);
-  fragmentShader.create(fragmentShaderSource, "triangle.frag");
+	Shader fragmentShader(GL_FRAGMENT_SHADER);
+	fragmentShader.create(fragmentShaderSource, "triangle.frag");
 
-  mProgram.create({&vertexShader, &fragmentShader});
-  mVertexArray.create();
+	mProgram.create({ &vertexShader, &fragmentShader });
+	mVertexArray.create();
 }
 
 void Triangle::appLoop()
 {
-  mGraphics.clear(GL_COLOR_BUFFER_BIT);
-  mProgram.activate();
-  mVertexArray.activate();
-  mVertexArray.draw(GL_TRIANGLES, 0, 3);
+	mGraphics.clear(GL_COLOR_BUFFER_BIT);
+	mProgram.activate();
+	mVertexArray.activate();
+	mVertexArray.draw(GL_TRIANGLES, 0, 3);
 }
 
 int main(int argc, char* argv[])
 {
-  Triangle app;
-  app.create("Teeny - Triangle", 1280, 720);
-  app.run();
+	Triangle app;
+	app.create("Teeny - Triangle", 1280, 720);
+	app.run();
 
-  return 0;
+	return 0;
 }
